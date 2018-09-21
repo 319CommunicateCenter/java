@@ -12,6 +12,7 @@ import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.audience.Audience;
 import cn.jpush.api.push.model.notification.*;
+import com.google.gson.JsonObject;
 import io.netty.handler.codec.http.HttpMethod;
 import org.junit.Test;
 
@@ -71,13 +72,36 @@ public class PushClientTest extends BaseTest {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+//        TEST
+//
+//        JsonObject top = new JsonObject();
+//        top.addProperty("alias", "");
+//
+//        ClientConfig clientConfig = ClientConfig.getInstance();
+//        String host = (String) clientConfig.get(ClientConfig.DEVICE_HOST_NAME);
+//        final NettyHttpClient client = new NettyHttpClient(ServiceHelper.getBasicAuthorization(APP_KEY, MASTER_SECRET),
+//                null, clientConfig);
+//        try {
+//            URI uri = new URI(host + clientConfig.get(ClientConfig.DEVICES_PATH));
+//            PushPayload payload = buildPushObject_all_alias_alert();
+//            client.sendRequest(HttpMethod.POST, payload.toString(), uri, new NettyHttpClient.BaseCallback() {
+//                @Override
+//                public void onSucceed(ResponseWrapper responseWrapper) {
+//                    LOG.info("Got result: " + responseWrapper.responseContent);
+//                }
+//            });
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
     }
 
 
     public static PushPayload buildPushObject_all_alias_alert() {
+
         return PushPayload.newBuilder()
                 .setPlatform(Platform.all())
-                .setAudience(Audience.registrationId(REGISTRATION_ID3))
+//                .setAudience(Audience.registrationId(REGISTRATION_ID3))
+//                .setAudience(Audience.alias(alias))
                 .setNotification(Notification.alert(ALERT))
                 .setOptions(Options.newBuilder().setApnsProduction(false).setTimeToLive(86000).build())
                 .build();

@@ -5,9 +5,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Console;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import cn.jiguang.common.ClientConfig;
+import cn.jiguang.common.ServiceHelper;
+import cn.jiguang.common.connection.NettyHttpClient;
+import cn.jiguang.common.resp.ResponseWrapper;
+import cn.jpush.api.push.model.*;
+import io.netty.handler.codec.http.HttpMethod;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -18,8 +27,6 @@ import cn.jiguang.common.resp.DefaultResult;
 import cn.jpush.api.JPushClient;
 import cn.jpush.api.SlowTests;
 import cn.jpush.api.push.PushResult;
-import cn.jpush.api.push.model.Platform;
-import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
 import cn.jpush.api.push.model.audience.AudienceTarget;
 import cn.jpush.api.push.model.audience.AudienceType;
@@ -27,17 +34,16 @@ import cn.jpush.api.push.model.notification.Notification;
 
 /**
  * Device1: 0900e8d85ef
- * Device2: 
- *
+ * Device2:
+ * <p>
  * tag1: Device1
  * tag2: Device2
  * tag_all: Device1, Device2
  * tag_no: no Device
- *
+ * <p>
  * alias1: Device1
  * alias2: Device2
  * alias_no: no Device
- *
  */
 @Category(SlowTests.class)
 public class AudienceTest extends BaseRemotePushTest {
@@ -121,7 +127,7 @@ public class AudienceTest extends BaseRemotePushTest {
     public void sendByTagMore() throws Exception {
         PushPayload payload = PushPayload.newBuilder()
                 .setPlatform(Platform.all())
-                .setAudience(Audience.tag(TAG1, TAG2))
+                .setAudience(Audience.tag(TAG2))
                 .setNotification(Notification.alert(ALERT))
                 .build();
         PushResult result = _client.sendPush(payload);
@@ -276,6 +282,31 @@ public class AudienceTest extends BaseRemotePushTest {
         assertTrue(result.isResultOK());
     }
 
+    @Test
+    public void test1() {
+        ClientConfig clientConfig = ClientConfig.getInstance();
+        String host = (String) clientConfig.get(ClientConfig.PUSH_HOST_NAME);
+        final NettyHttpClient client = new NettyHttpClient(ServiceHelper.getBasicAuthorization(APP_KEY, MASTER_SECRET),
+                null, clientConfig);
+
+        try {
+            URI uri = new URI(host + clientConfig.get(ClientConfig.PUSH_PATH));
+            PushPayload payload =PushPayload.newBuilder()
+                    .setPlatform(Platform.all())
+                    .setAudience(Audience.registrationId("170976fa8a8be719873"))
+//                    .setAudience(Audience.alias(TAG1))
+                    .setNotification(Notification.alert(ALERT))
+                    .setMessage(Message.newBuilder().setMsgContent(MSG_CONTENT).build())
+                    .setSMS(SMS.content(1,0))
+                    .build();
+            client.sendRequest(HttpMethod.POST, payload.toString(), uri, null);
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        //根据accountid抓取店铺实体
+        System.out.println(new java.util.Date(new GregorianCalendar(1980,0,1).getTimeInMillis()));
+    }
 
 }
 

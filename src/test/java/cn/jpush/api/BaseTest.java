@@ -4,17 +4,17 @@ import org.junit.Before;
 
 public abstract class BaseTest {
 
-	protected static final String APP_KEY = "d4ee2375846bc30fa51334f5";
-    protected static final String MASTER_SECRET = "3f045fd404d09a8a1f38d791";
+	protected static final String APP_KEY = "a8364ff617633b8354200331";
+    protected static final String MASTER_SECRET = "e6200511ccc46af028546bce";
     protected static final String GROUP_MASTER_SECRET = "b11314807507e2bcfdeebe2e";
     protected static final String GROUP_PUSH_KEY = "2c88a01e073a0fe4fc7b167c";
 
     public static final String ALERT = "JPush Test - alert";
     public static final String MSG_CONTENT = "JPush Test - msgContent";
     
-    public static final String REGISTRATION_ID1 = "0900e8d85ef";
-    public static final String REGISTRATION_ID2 = "0a04ad7d8b4";
-    public static final String REGISTRATION_ID3 = "18071adc030dcba91c0";
+    public static final String REGISTRATION_ID1 = "13065ffa4e0343f1654";
+    public static final String REGISTRATION_ID2 = "13065ffa4e0343f1654";
+    public static final String REGISTRATION_ID3 = "170976fa8a8be719873";
 
     
     protected JPushClient jpushClient = null;
